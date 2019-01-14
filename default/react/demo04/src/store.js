@@ -7,7 +7,10 @@ class Store{
         this._emitter = new EventEmitter;
     }
     get state(){
-        return JSON.parse(JSON.stringify(this._state));
+        let oo = JSON.parse(JSON.stringify(this._state));
+
+        return oo;
+
     }
     //fns -function or object
     setUpdates(fns){
@@ -22,8 +25,8 @@ class Store{
             const keys = Object.keys(this._updates);
             keys.forEach(key=>{
                 let updater = this._updates[key]
-                let value = this.state[key];
-                let newSubState = updater(value,action);
+                let oldValue = this.state[key];
+                let newSubState = updater(oldValue,action);
                 newState[key] = newSubState;
             })
             this._state = Object.assign({},this.state,newState);
@@ -63,7 +66,7 @@ sto.setUpdates({
 sto.listen(()=>{
     console.log(sto.state);
 })
-const action = {
+const action1 = {
     type:'+'
 };
 const action2 = {
@@ -73,4 +76,4 @@ const action3 = {
     type:'changeName',
     name:'wangyingjie'
 }
-sto.dispatch(action3);
+sto.dispatch(action1);
