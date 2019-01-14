@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>jsplumb-viso</title>
+  <link href="__PUBLIC__/jsplumb/css/font-awesome.css" rel="stylesheet">
+  <link href="__PUBLIC__/jsplumb/css/bootstrap.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/jsplumb/css/jquery-ui.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="__PUBLIC__/jsplumb/css/index.css">
+  <link href="__PUBLIC__/jsplumb/css/jsplumbtoolkit-defaults.css" rel="stylesheet">
+  <link rel="stylesheet" href="__PUBLIC__/jsplumb/css/animate.css">
+  <link rel="stylesheet" href="__PUBLIC__/jsplumb/css/bootstrap-select.css" rel="stylesheet">
+  <link rel="stylesheet" href="__PUBLIC__/jsplumb/bootstrap-fileinput-master/css/fileinput.min.css">
+  <style>
+  .layui-layer-title{
+    background: #aac0d2;
+  }
+  .list-group-item{
+    padding:6px 6px;
+  }
+  .panel-info > .panel-heading{
+    padding:7px 7px;
+    background-color:#b7ecbc;
+  }
+  .alabel{
+    color:#0c4654;
+    padding:5px;
+    border-radius: 6px;
+    z-index:30;
+    background-color: #e4f1ee;
+  }
+  .bg-success{
+    background-color:#e4f1ee;
+  }
+  .bg-info{
+    background:rgba(86, 173, 173, 0.45);
+  }
+  #drop-bg{
+    width: 2300px;
+    height:1500px;
+    background: #e4f1ee
+  }
+  .nodeselected {
+    border: 2px solid rgb(147, 22, 206);
+  }
+  .warning{
+    border:2px solid red;
+  }
+
+  .col-md-1{
+    position:relative;min-height:1px;padding-right:15px;padding-left:15px;
+    float:left;
+    width:180px;
+    text-align:center
+  }
+  .row{
+    width:2290px;
+  }
+  [role=button]{
+    font-size: 13px
+  }
+  #container-2 .btn{
+    width: 127px;
+    border:2px !important;
+  }
+  #container-4 .btn{
+    width: 127px;
+    border:2px !important;
+  }
+  .popover-content{
+    min-width: 200px;
+    max-width: 280px;
+  }
+  #pannellistedit_question{width: 128px;overflow: hidden;}
+  #pannellistedit_assistant{width: 128px;overflow: hidden;}
+  #collapse2{overflow-y:auto;overflow-x: hidden;width: 144px; }
+  #collapse4{overflow-y:auto;overflow-x: hidden;width: 144px; }
+  [id^='tqamodifyaction']{
+    display: block;
+    float:right;
+    /* right:0px; */
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  #closetips{
+    display: block;
+    float:right;
+    margin-left:10px;
+
+  }
+  label{
+    font-weight: 30;
+  }
+  hr{
+    margin:0px;
+    width: 100%;
+    border: 0.5px solid rgba(225, 225, 245, 0.95);
+    right: 0px;
+  }
+  .popover{
+    z-index:100 !important;
+  }
+  [name^='wordTag']{
+    float:left
+  }
+  .file-input{
+    clear:both !important
+  }
+  #word-and-record,[id$='-pannel']{
+    cursor:pointer
+  }
+
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container-fluid">
+      <div class="row">
+        <div id="side-buttons" class="col-md-1 clearfix bg-info min-height">
+          <div id='container-3'>
+              <a href="#" class="btn btn-large disabled" style="color:black">节点类型</a>
+              <a class="btn btn-success btn-controler" style="margin-top: 10px" href="#" data-template="tpl-Main" role="button">
+                <i class="fa fa-navicon" aria-hidden="true"></i>
+                中间节点
+              </a>
+              <a class="btn btn-danger btn-controler" style="margin-top:10px" href="#" data-template="tpl-Exit" role="button">
+                <i class="fa fa-navicon" aria-hidden="true"></i>
+                结束节点
+              </a>
+              <i class="icon-double-angle-left icon-2x" style="position: absolute;top: 330px;right: 0px;color:#0c4654" alt=""></i>
+              <i class="icon-double-angle-right icon-2x" style="position: absolute;top: 330px;right: -18px;color:#0c4654" alt=""></i>
+          </div>
+          <!-- 辅助话术编辑 -->
+          <div class="container" id='container-2' style="width:130px;padding-left:0px;padding-right:0px;padding-top:20px;margin:0 auto">
+            <div class="panel-group">
+              <div class="panel panel-default" id="pannellistedit_assistant">
+                <div class="panel-heading">
+                  <h4 class="panel-title" id='assistant-title'>
+                    <a data-toggle="collapse" href="#collapse2">辅助话术编辑</a>
+                  </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse in collapse pre-scrollable">
+                  <ul class="list-group" id="list-assistant-tqa-group-edit">
+
+                      <!-- <li class="list-group-item" style="padding:0px;width: 120px">
+                          <button type="button" class="btn btn-default" data-trigger="click" style="border:0.5px 0px !important" data-html="true" data-container="body" data-toggle="popover" data-placement="right" data-content="
+                          <i class='icon-play-circle' aria-hidden='true'></i>
+                          <label id='closetips'>X</label>
+                          <label id='tqamodifyaction'>
+                            修改文字/上传录音
+                          </label>
+                          <hr>
+                          你好
+                          ">
+                           开头语
+                          </button>
+                      </li> -->
+
+                  </ul>
+                  <!-- <div class="panel-footer">Footer</div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 问题库编辑 -->
+          <div class="container" id='container-4' style="width:130px;padding-left:0px;padding-right:0px;margin:0 auto">
+            <div class="panel-group">
+              <div class="panel panel-default" id="pannellistedit_question">
+                <div class="panel-heading">
+                  <h4 class="panel-title" id='question-title'>
+                    <a data-toggle="collapse" href="#collapse4">问题库编辑</a>
+                  </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse pre-scrollable">
+                  <ul class="list-group" id="list-question-tqa-group-edit">
+
+                      <!-- <li class="list-group-item" style="padding:0px;width: 120px">
+                          <button type="button" class="btn btn-default" data-trigger="click" style="border:0.5px 0px !important" data-html="true" data-container="body" data-toggle="popover" data-placement="right" data-content="
+                          <i class='icon-play-circle' aria-hidden='true'></i>
+                          <label id='closetips'>X</label>
+                          <label id='tqamodifyaction'>
+                            修改文字/上传录音
+                          </label>
+                          <hr>
+                          你好
+                          ">
+                           开头语
+                          </button>
+                      </li> -->
+
+                  </ul>
+                  <!-- <div class="panel-footer">Footer</div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="save-model" type="submit">保存模板</button>
+        </div>
+
+        <div class="col-md-11 bg-success min-height" id="containment">
+          <div class="panel panel-primary" style="width:30%;position:fixed;right:5px;top:7px;z-index: 100;" >
+              <div class="panel-heading" style="height:35px">
+                  <h5 class="panel-title" style="float:left" id='nodeComment'>节点名称</h5>
+                  <h5 style="float:right;margin-top:0px" id='word-and-record'>修改文字</span>&nbsp;/&nbsp;上传录音</span></h5>
+              </div>
+              <div class="panel-body" id='nodetext' style="z-index: -30 !important">
+                节点的文字内容！
+              </div>
+          </div>
+          <div id="rubberband" style="border:1px solid green;display:none;"></div>
+          <div id='drop-bg'></div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!--模态框-->
+  <div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true' style="z-index:99999999999 !important">
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>
+                <h4 class='modal-title' id='myModalLabel'>请选择tqa类型</h4>
+            </div>
+            <div class='modal-body'>
+              tqa类型：
+              <select id="tqaclasses" class="selectpicker" multiple data-live-search="true" data-max-options="5" id="">
+                <option value="q_1">q_1:房子</option>
+                <option value="q_2">q_2:车子</option>
+                <option value="q_3">q_3:存款</option>
+                <option value="q_4">q_4:上班</option>
+                <option value="q_5">q_5:做生意</option>
+            </select>
+            </div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-default' data-dismiss='modal'>关闭</button>
+                <button type='button' class='btn btn-primary' data-save='modal'>提交更改</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- 保存  -->
+  <div class="modal fade" id='save-success' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">流程图提示</h4>
+        </div>
+        <div class="modal-body">
+          <p>保存成功！</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <div class="modal fade" id='save-failed' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">流程图提示</h4>
+        </div>
+        <div class="modal-body">
+          <p>请填写节点名称！</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <!-- 主流程节点文字及录音 -->
+  <div class="modal fade" id='word-record-modal' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="wordRecord">文字及录音</h4>
+        </div>
+        <div class="modal-body">
+          <ul id="myProcedureTab" class="nav nav-tabs">
+            <li class="active" id='normal_li'>
+              <a href="#normal_procedure" style='color:inherit;font-size:14px;' data-toggle="tab">正常流程</a>
+            </li>
+            <li><a href="#repeat_1" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(1)</a></li>
+            <li><a href="#repeat_2" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(2)</a></li>
+            <li><a href="#repeat_3" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(3)</a></li>
+          </ul>
+          <div id='myProcedureTabContent' class='tab-content'>
+            <div class='tab-pane fade in active' id='normal_procedure'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_0'>
+                  <option>正常跳转</option>
+                  <option disabled>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_0'>节点文字</h4>
+              <div id='interrupt_ornot_0' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="interrupt_0" value="1" id="interrupt_0">
+                <label for="interrupt_0">可打断</label>
+                <input type="radio" name="interrupt_0" value="0" id="no_interrupt_0" checked='checked'>
+                <label for="no_interrupt_0">不打断</label>
+              </div>
+              <textarea id='nodeTextArea_0' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_0'>节点录音</h4>
+              <input type="file" id='record-file_0' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+            <div class='tab-pane fade' id='repeat_1'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_1'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_1'>节点文字</h4>
+              <div id='interrupt_ornot_1' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="interrupt_1" value="1" id="interrupt_1">
+                <label for="interrupt_1">可打断</label>
+                <input type="radio" name="interrupt_1" value="0" id="no_interrupt_1" checked='checked'>
+                <label for="no_interrupt_1">不打断</label>
+              </div>
+              <textarea id='nodeTextArea_1' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_1'>节点录音</h4>
+              <input type="file" id='record-file_1' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+            <div class='tab-pane fade' id='repeat_2'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_2'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_2'>节点文字</h4>
+              <div id='interrupt_ornot_2' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="interrupt_2" value="1" id="interrupt_2">
+                <label for="interrupt_2">可打断</label>
+                <input type="radio" name="interrupt_2" value="0" id="no_interrupt_2" checked='checked'>
+                <label for="no_interrupt_2">不打断</label>
+              </div>
+              <textarea id='nodeTextArea_2' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_2'>节点录音</h4>
+              <input type="file" id='record-file_2' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+            <div class='tab-pane fade' id='repeat_3'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_3'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_3'>节点文字</h4>
+              <div id='interrupt_ornot_3' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="interrupt_3" value="1" id="interrupt_3">
+                <label for="interrupt_3">可打断</label>
+                <input type="radio" name="interrupt_3" value="0" id="no_interrupt_3" checked='checked'>
+                <label for="no_interrupt_3">不打断</label>
+              </div>
+              <textarea id='nodeTextArea_3' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_3'>节点录音</h4>
+              <input type="file" id='record-file_3' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id='closeNodeModal'>关闭</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+
+  <!-- 辅助话术以及问题库编辑的模态框 -->
+  <div class="modal fade" id='assistant_speechcraft' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="tqaWordRecord">文字及录音</h4>
+        </div>
+        <div class="modal-body">
+          <ul id="myTqaTab" class="nav nav-tabs">
+            <li class="active" id='normal_li_tqa'>
+              <a href="#normal_procedure_tqa" style='color:inherit;font-size:14px;' data-toggle="tab">正常流程</a>
+            </li>
+            <li><a href="#repeat_1_tqa" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(1)</a></li>
+            <li><a href="#repeat_2_tqa" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(2)</a></li>
+            <li><a href="#repeat_3_tqa" style='color:inherit;font-size:14px;' data-toggle="tab">未听懂&nbsp;/&nbsp;清&nbsp;(3)</a></li>
+          </ul>
+          <div id='myTqaTabContent' class='tab-content'>
+            <div class='tab-pane fade in active' id='normal_procedure_tqa'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='tqaActionId'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag2'>节点文字</h4>
+              <div id='interrupt_ornot' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="tqa_interrupt" value="1" id="interrupt">
+                <label for="interrupt">可打断</label>
+                <input type="radio" name="tqa_interrupt" value="0" id="no_interrupt" checked='checked'>
+                <label for="no_interrupt">不打断</label>
+              </div>
+              <textarea id='tqaTextArea' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag'>节点录音</h4>
+              <input type="file" id='tqa_record-file_0' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+
+            <div class='tab-pane fade' id='repeat_1_tqa'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_1'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_1'>节点文字</h4>
+              <div id='interrupt_ornot_1' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="tqa_interrupt_1" value="1" id="tqa_interrupt_1">
+                <label for="tqa_interrupt_1">可打断</label>
+                <input type="radio" name="tqa_interrupt_1" value="0" id="tqa_no_interrupt_1" checked='checked'>
+                <label for="tqa_no_interrupt_1">不打断</label>
+              </div>
+
+              <textarea id='tqaTextArea_1' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_1'>节点录音</h4>
+              <input type="file" id='tqa_record-file_1' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+
+            <div class='tab-pane fade' id='repeat_2_tqa'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_2'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_2'>节点文字</h4>
+              <div id='interrupt_ornot_2' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="tqa_interrupt_2" value="1" id="tqa_interrupt_2">
+                <label for="interrupt_2">可打断</label>
+                <input type="radio" name="tqa_interrupt_2" value="0" id="tqa_no_interrupt_2" checked='checked'>
+                <label for="no_interrupt_2">不打断</label>
+              </div>
+              <textarea id='tqaTextArea_2' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_2'>节点录音</h4>
+              <input type="file" id='tqa_record-file_2' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+
+            <div class='tab-pane fade' id='repeat_3_tqa'>
+              <h5>节点动作</h5>
+              <div style="margin-top:10px">
+                <select class="selectpicker" id='nodeActionId_3'>
+                  <option>正常跳转</option>
+                  <option>挂机</option>
+                </select>
+              </div>
+              <h5 name='wordTag_3'>节点文字</h4>
+              <div id='interrupt_ornot_3' style="float:right;margin:8px 8px 0 0;">
+                <input type="radio" name="tqa_interrupt_3" value="1" id="tqa_interrupt_3">
+                <label for="tqa_interrupt_3">可打断</label>
+                <input type="radio" name="tqa_interrupt_3" value="0" id="tqa_no_interrupt_3" checked='checked'>
+                <label for="tqa_no_interrupt_3">不打断</label>
+              </div>
+              <textarea id='tqaTextArea_3' class="form-control" rows="3"></textarea>
+              <h5 name='recorddTag_3'>节点录音</h4>
+              <input type="file" id='tqa_record-file_3' data-allowed-file-extensions='["wav"]' data-max-file-count='1'  >
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id='closeNodeModal'>关闭</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+
+<!--流程图中的模板-->
+  <script id="tpl-Main" type="text/html">
+    <div class="pa" id='{{id}}-Main' style='top:{{top}}px;left:{{left}}px' >
+      <div class="panel panel-default panel-node panel-info" id={{id}}-pannel>
+        <div id='{{id}}-heading' data-id="{{id}}-Main" class="panel-heading">
+          <i name='audio' class="icon-play-circle" aria-hidden="true"></i>
+          <input id='inputnodeName-{{id}}' type='text' style='width:92px;margin-left:3px;border:0px;height:20px;outline:none;border-radius:4px;background-color:#b7ecbc;' placeholder='修改节点名' required='required' size='9' value='{{name}}'>
+          <span class="delete-node pull-right" data-type="deleteNode" data-id="{{id}}-Main">X</span>
+        </div>
+        <ul class="list-group">
+          <li id="{{id}}-Main-no" data-pid="{{id}}" class="list-group-item panel-node-list">否定
+          </li>
+          <li id="{{id}}-Main-yes" data-pid="{{id}}" class="list-group-item panel-node-list">肯定
+          </li>
+          <li id="{{id}}-Main-branch" data-pid="{{id}}" class="list-group-item panel-node-list">分支
+          </li>
+          <!-- {{#choices}}
+          <li id="{{id}}-key-{{key}}" data-pid="{{id}}" class="list-group-item panel-node-list">按{{key}}
+          </li>{{/choices}} -->
+        </ul>
+      </div>
+    </div>
+  </script>
+<!--结束语模板-->
+  <script id="tpl-Exit" type="text/html">
+    <div class='pa' id='{{id}}-Exit' data-id='{{id}}-Exit' style='top:{{top}}px;left:{{left}}px'>
+      <a class='btn btn-danger' href='#' role='button'>
+        <i name='audio' class="icon-play-circle" aria-hidden="true"></i>
+        &nbsp;&nbsp;结束语
+        <span></span>
+        <span class="delete-node pull-right" data-type="deleteNode" data-id="{{id}}-Exit">X</span>
+      </a>
+    </div>
+  </script>
+<!--问候语模板-->
+  <script id="tpl-Root" type="text/html">
+    <div class='pa' id='{{id}}-Root' style='top:{{top}}px;left:{{left}}px'>
+      <a class='btn btn-default' href='#' role='button'>
+        <i name='audio' class="icon-play-circle" aria-hidden="true"></i>
+       &nbsp;&nbsp; {{name}}&nbsp;&nbsp;&nbsp;&nbsp;
+        <span></span>
+        <span class="delete-node pull-right" style="display:none" data-type="deleteNode" data-id="{{id}}-Root">X</span>
+      </a>
+    </div>
+  </script>
+
+
+  <script src="__PUBLIC__/jsplumb/js/uuid.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/mustache.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/jquery.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/jquery-ui.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/bootstrap.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/bootstrap-select.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/jquery.jsPlumb.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/jsPlumb.js"></script>
+
+  <script src="__PUBLIC__/jsplumb/js/graphlib.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+  <script src="__PUBLIC__/jsplumb/bootstrap-fileinput-master/js/locales/zh.js"></script>
+  <script>
+    var module_id = '{$module_id}';
+    var template_vxml = '{$template_vxml}';
+    var user_id = '{$Think.session.userInfo.id}';
+    var clickNodeId = '';
+    var tqa_id = '';
+    var nodeIdAndText = {}; //保存节点和文字
+    var tqaIdAndText = {}
+    var tqaRepeatIdAndTextAndRecordFile = {}
+    var procedureIdAndTextAndRecordFile = {}
+    //模态框出来之后clickNodId会消失，因此用clickNodeIdForAreaText来保存记录clickNodeId
+    var clickNodeIdForAreaText = ''
+    function initProcedureFileInput(clickId) {
+        console.log('aaaaaaaaaaaaaaaaa')
+        var filedata = {
+                          'language':'zh',
+                          uploadUrl:'uploadRecord',
+                          autoReplace:true,
+                          maxFielCount:1,
+                          //设置为同步上传，这里也很坑。
+                          uploadAsync:false,
+                          uploadExtraData:function()
+                          {
+                            var temp = {'template_vxml':template_vxml,'clickNodeIdForAreaText':clickNodeIdForAreaText}
+                            return temp;
+                          }
+                       }
+        $("#record-file_1").fileinput(filedata)
+        $("#record-file_2").fileinput(filedata)
+        $("#record-file_3").fileinput(filedata)
+        $("#record-file_0").fileinput(filedata)
+      }
+      //注意同步上传和异步上传的回调函数不一样。 异步是fileuploaded
+    $('#record-file_0').on('filebatchuploadsuccess',function(event,data,previewId,index){
+      audioObjForProcedure[clickNodeIdForAreaText] = new Audio('/airecord/'+user_id+'/'+template_vxml+'/'+clickNodeIdForAreaText+'.wav?cb='+new Date().getTime())
+      audioObjForProcedure[clickNodeIdForAreaText].crossOrigin = 'anonymous';
+    })
+    function initTqaFileInput(tqa_id_id){
+        var filedata = {'language':'zh',
+                        uploadUrl:'uploadTqaRecord',
+                        maxFileCount:1,
+                        uploadAsync:false,
+                        initialPreview:[],
+                        uploadExtraData:function()
+                        {
+                          var temp = {'template_vxml':template_vxml,'tqa_id':tqa_id}
+                          return temp;
+                        }
+                      }
+        $("#tqa_record-file_1").fileinput(filedata)
+        $("#tqa_record-file_2").fileinput(filedata)
+        $("#tqa_record-file_3").fileinput(filedata)
+        $("#tqa_record-file_0").fileinput(filedata)
+    }
+    $('#tqa-record-file_0').on('filebatchuploadsuccess',function(event,data,previewId,index){
+      audioObjForTqa[tqa_id]=null
+      audioObjForTqa[tqa_id] = new Audio('/airecord/'+user_id+'/'+template_vxml+'/tqa/'+tqa_id+'.wav?cb='+new Date().getTime())
+      audioObjForTqa[tqa_id].load();
+      audioObjForTqa[tqa_id].crossOrigin = 'anonymous';
+    })
+
+
+  </script>
+  <script src="__PUBLIC__/jsplumb/js/mysqldata.js"></script>
+  <!--初始化音频播放对象-->
+  <script src="__PUBLIC__/jsplumb/js/procedureAudioObj.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/tqaAudioObj.js"></script>
+
+  <script src="__PUBLIC__/jsplumb/js/config.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/index.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/panzoom.js"></script>
+  <script src="__PUBLIC__/jsplumb/js/tqadata.js"></script>
+  <script type="text/javascript" language="javascript" charset="utf-8" src="__PUBLIC__/jsplumb/js/savedata.js"></script>
+
+  <script>
+    $("svg").on('mouseover',"circle",function(e){
+      e.stopPropagation();
+        return 0;
+      });
+    $(
+      function(){
+        //console.log('{$module_id}')
+        //选中之后集体拖拽
+        var startPoint = {};
+        var rubberbandDrawingActive = false;
+        var col1width = $(".col-md-1").innerWidth()
+
+        function diagramContainer_MouseDown(event) {
+            //console.log(event.target)
+            if(event.target.getAttribute('id') == 'word-and-record'){
+              //console.log('world')
+              $('#word-and-record').trigger('click')
+              return;
+            }
+            startPoint.x = event.pageX-col1width;
+            startPoint.y = event.pageY;
+            patt1 = /^inputnodeName/;
+            //console.log(document.activeElement.id)
+            if(patt1.test(document.activeElement.id)){
+              $(document.activeElement).trigger('blur')
+            }
+            $("#rubberband").css({top:startPoint.y, left:startPoint.x, height:1, width:1, position:'absolute'});
+            $("#rubberband").show();
+        }
+
+        function diagramContainer_MouseMove(event) {
+            //alert('mousemoving...')
+            //event.stopPropagation();
+            //console.log(event.target);
+            if($("#rubberband").is(":visible") !== true) { return; }
+
+            var t = (event.pageY > startPoint.y) ? startPoint.y : event.pageY;
+            var l = (event.pageX-col1width >= startPoint.x) ? startPoint.x : event.pageX-col1width;
+
+            wcalc = event.pageX-col1width - startPoint.x;
+            var w = (event.pageX-col1width > startPoint.x) ? wcalc : (wcalc * -1);
+
+            hcalc = event.pageY - startPoint.y;
+            var h = (event.pageY > startPoint.y) ? hcalc : (hcalc * -1);
+
+            $("#rubberband").css({top:t, left:l, height:h, width:w, position:'absolute',zIndex:1000000});
+        }
+
+        function diagramContainer_MouseUp(event) {
+            //event.stopPropagation();
+            diagramContainer_FindSelectedItem();
+            //alert('mouseup...')
+            $("#rubberband").hide();
+        }
+
+        function diagramContainer_FindSelectedItem() {
+            if($("#rubberband").is(":visible") !== true) { return; }
+
+            var rubberbandOffset = getTopLeftOffset($("#rubberband"));
+
+            $(".pa").each(function() {
+                var itemOffset = getTopLeftOffset($(this));
+                if( itemOffset.top > rubberbandOffset.top &&
+                    itemOffset.left > rubberbandOffset.left &&
+                    itemOffset.right < rubberbandOffset.right &&
+                    itemOffset.bottom < rubberbandOffset.bottom) {
+                    $(this).addClass("nodeselected");
+
+                    var elementid = $(this).attr('id');
+                    jsPlumb.addToDragSelection(elementid);
+                }
+            });
+        }
+
+        function getTopLeftOffset(element) {
+            var elementDimension = {};
+            elementDimension.left = element.offset().left;
+            elementDimension.top =  element.offset().top;
+            elementDimension.right = elementDimension.left + element.outerWidth();
+            elementDimension.bottom = elementDimension.top + element.outerHeight();
+
+            return elementDimension;
+        }
+
+        function diagramContainer_Click(event) {
+            clickNodeId = ''
+            if(startPoint.x === event.pageX-col1width && startPoint.y === event.pageY)
+            {
+                jsPlumb.clearDragSelection();
+                $(".pa").each(function() {
+                    $(this).removeClass("nodeselected");
+                });
+            }
+        }
+
+        jsPlumb.ready(function(event) {
+            $(".col-md-11").mousedown(diagramContainer_MouseDown);
+            $('#side-buttons').mousedown(function(e){
+              e.preventDefault()
+              clickNodeId = ''
+              $('#nodetext').text('节点的文字内容！')
+              $('#nodeComment').text('节点名称')
+
+            })
+            $('#containment').mousedown(function(e){
+              e.preventDefault()
+              clickNodeId = ''
+              $('#nodetext').text('节点的文字内容！')
+              $('#nodeComment').text('节点名称')
+            })
+            //注意这里很坑，如果用drop-bg来监听，则会出现鼠标按下之后移动到矩形内部时矩形无法变化大小的问题,原因是触发了mouseleave事件
+            $(".col-md-11").mousemove(diagramContainer_MouseMove);
+            $(".col-md-11").mouseup(diagramContainer_MouseUp);
+            $(".col-md-11").click(diagramContainer_Click);
+            $(".col-md-11").mouseleave(function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              //console.log(e.target)
+              //console.log(e.currentTarget)
+            })
+
+        });
+
+
+        //简单的页面事件逻辑
+        $('div').on('click',"[id$='-heading']",function(){
+          event.stopPropagation();
+          //获取宽高距离
+          var left = this.parentNode.offsetLeft+this.parentNode.parentNode.offsetLeft
+          //console.log(left)
+        })
+        $("div").on('click','[data-type="deleteNode"]', function (event) {
+          event.stopPropagation()
+          if(confirm("确定删除该节点么？")){
+            eventHandler(event.target.dataset)
+          }
+        })
+
+        $('div').on('blur',"[id^='inputnodeName']",function(e){
+          e.stopPropagation();
+          if(this.value =='' || this.value == '请填写节点名'){
+            this.parentNode.parentNode.classList.add('shake','animated','warning');
+            this.setAttribute('placeholder','请填写节点名');
+          }
+        })
+
+
+        $("div").on('mousedown',"[id^='inputnodeName']",function(e){
+          //alert('nihao')
+          e.stopPropagation();
+          //alert(this.parentNode.parentNode.parentNode)
+          if(this.parentNode.parentNode.classList.contains('shake')){
+            this.parentNode.parentNode.classList.remove('shake','animated','warning');
+          }
+        })
+        //主流程播放录音
+        $("div").on('click',"[name='audio']",function(e){
+          e.stopPropagation();
+          var that = $(this)
+          //$(this).removeClass('icon-play-circle').addClass('glyphicon glyphicon-pause')
+          var dataId = $(this).next().next().attr('data-id');
+          var type = dataId.slice(-4);
+          var id = dataId.slice(0,-5);
+          //var audio = new Audio('/airecord/'+user_id+'/'+template_vxml+'/'+id+'.wav');
+          if($(this).hasClass('icon-play-circle')){
+            console.log('play............')
+            console.log(audioObjForProcedure)
+            audioObjForProcedure[id].play();
+            $(this).removeClass('icon-play-circle').addClass('glyphicon glyphicon-pause')
+            audioObjForProcedure[id].addEventListener('ended',function(){
+              that.removeClass('glyphicon glyphicon-pause').addClass('icon-play-circle')
+            })
+          }else{
+            console.log('pausing.........')
+            console.log()
+            audioObjForProcedure[id].pause();
+            that.removeClass('glyphicon glyphicon-pause').addClass('icon-play-circle')
+          }
+        })
+        data.nodeList.forEach(function(val,index,arr){
+          nodeIdAndText[val['id']]=val['text']
+        })
+        //console.log(nodeIdAndText);
+        //定义一个存放comment的变量
+        var nodeCommentInModal = ''
+        //Main节点点击展示文字
+        $("div").on('click',"[id$='-pannel']",function(e){
+          e.stopPropagation();
+          var id = this.parentNode.getAttribute('id').slice(0,-5);
+          var nodecomment = $(this).find('input').val()
+          nodeCommentInModal = $(this).find('input').val()
+          //console.log(nodecomment)
+          $('#nodeComment').text(nodecomment);
+          $(this).find('input').on('input',function(e){
+            $('#nodeComment').text(this.value);
+          })
+          //console.log(id)
+          clickNodeId = id;
+          var flag = 0
+          for(var i in nodeIdAndText){
+            if(i==id){
+              $('#nodetext').text(nodeIdAndText[i])
+              //定义全局变量
+              flag = 1
+            }
+          }
+          if(nodecomment ==''){
+            $("#nodeComment").text('请填写节点名称！')
+          }
+          if(flag ==0){
+            $('#nodetext').text('请填写节点文字内容！')
+          }
+        })
+        //Root节点点击展示文字
+        $("div").on('click','div[id$=-Root]',function(e){
+          var id = this.getAttribute('id').slice(0,-5);
+          //console.log(id)
+          clickNodeId = id;
+          var flag = 0
+          $('#nodeComment').text('问候语')
+          for(var i in nodeIdAndText){
+            if(i==id){
+              $('#nodetext').text(nodeIdAndText[i])
+              flag = 1;
+            }
+          }
+          if(flag ==0){
+            $('#nodetext').text('请填写节点文字内容！')
+          }
+        })
+        //Exit节点点击展示文字
+        $("div").on('click',"[id$=-Exit]",function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          var id = this.getAttribute('id').slice(0,-5);
+          //console.log(id)
+          clickNodeId = id;
+          var flag = 0
+          $('#nodeComment').text('结束语')
+          for(var i in nodeIdAndText){
+            if(i==id){
+              $('#nodetext').text(nodeIdAndText[i])
+              flag = 1;
+            }
+          }
+          if(flag ==0)
+          {
+            $('#nodetext').text('请填写节点文字内容！')
+          }
+        })
+        //主流程修改文字上传录音
+        $('div').on('click',"[id=word-and-record]",function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          //console.log(clickNodeId)
+          //console.log(clickNodeId)
+          //console.log(nodeIdAndText)
+          //console.log(nodeIdAndText[clickNodeId])
+
+          if(clickNodeId == ''){
+            alert('请点选节点!')
+          }else{
+            //触发一次点击事件，否则，刚拖入的节点在填写过comment之后上传录音的modal不能显示节点comment
+            $(document.activeElement).trigger('click');
+            $('#word-record-modal').modal('show');
+            $('#normal_li').addClass('active')
+            $('#normal_procedure').addClass('in active')
+
+            //console.log(nodeCommentInModal)
+            $('#wordRecord').text(nodeCommentInModal)
+            //清除modal的textarea
+            $('#nodeTextArea_0').val('');
+            //清除旧录音
+            //$('.file-drop-zone').html('<div class="file-drop-zone-title">拖拽音频文件到这里 …</div><div class="file-preview-thumbnails"></div><div class="clearfix"></div><div class="file-preview-status text-center text-success"></div><div class="kv-fileinput-error file-error-message" style="display: none;"></div>')
+            for(var i in nodeIdAndText){
+              if(i==clickNodeId){
+                $('#nodeTextArea_0').val(nodeIdAndText[i]);
+              }
+            }
+            console.log(procedureIdAndTextAndRecordFile)
+            console.log(clickNodeId)
+            var nodeText_1 = procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-1']==undefined?'':procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-1'][0]
+            var nodeText_2 = procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-2']==undefined?'':procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-2'][0]
+            var nodeText_3 = procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-3']==undefined?'':procedureIdAndTextAndRecordFile[clickNodeId+'-repeat-3'][0]
+            $('#nodeTextArea_1').val(nodeText_1)
+            $('#nodeTextArea_2').val(nodeText_2)
+            $('#nodeTextArea_3').val(nodeText_3)
+            //定义一个全局变量,以便在保存textarea时用，因为原来的clickNodeId在模态框弹出来之后会消失,以及新拖入节点的id赋值。
+            clickNodeIdForAreaText = clickNodeId
+            //console.log(clickNodeIdForAreaText)
+            initProcedureFileInput(clickNodeIdForAreaText)
+
+          }
+        })
+
+        //模态框
+        $("#myModal").on('hide.bs.modal',function(){
+          var tqaselected = $(".selectpicker").val();
+          //console.log(tqaselected);
+        })
+        //清除录音，否则下次会有上次的录音存在
+        $('body').on('hidden.bs.modal','.modal',function(){
+          $('.nav.nav-tabs .active').removeClass('active')
+          $('.tab-content .in.active').removeClass('in active')
+          $('.close.fileinput-remove').trigger('click')
+          $('#normal_li_tqa').addClass('active')
+          $('#normal_procedure_tqa').addClass('in active')
+
+        })
+        //在模态框的输入域中修改文字，动态更新到nodeIdAndText
+        $('#nodeTextArea_0').on('input',function(){
+          nodeIdAndText[clickNodeIdForAreaText] = $('#nodeTextArea_0').val()
+          console.log(nodeIdAndText[clickNodeIdForAreaText]);
+
+        })
+        $('#nodeTextArea_1').on('input',function(){
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-1'] = new Array();
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-1'][0] = $(this).val();
+          console.log(procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+"-repeat-1"][0]);
+
+        })
+        $('#nodeTextArea_2').on('input',function(){
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-2'] = []
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-2'][0] = $(this).val()
+          console.log(procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-2'][0]);
+        })
+        $('#nodeTextArea_3').on('input',function(){
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-3'] = []
+          procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-3'][0] = $(this).val()
+          console.log(procedureIdAndTextAndRecordFile[clickNodeIdForAreaText+'-repeat-3'][0]);
+
+        })
+
+
+        $(".icon-double-angle-left").on('click',function(){
+          $('.col-md-1').animate({"left":"-180px"});
+          $('.col-md-11').animate({"left":'-180px'});
+          $(".icon-double-angle-right").animate({"z-index":'10000000000',"opacity":'1'})
+          $(".icon-double-angle-left").animate({'opacity':'0'})
+        })
+        $(".icon-double-angle-right").on('click',function(){
+          $('.col-md-1').animate({"left":"0px"});
+          $('.col-md-11').animate({"left":'0px'});
+          $(".icon-double-angle-right").animate({"opacity":'0'})
+          $(".icon-double-angle-left").animate({'opacity':'1'});
+        })
+        //此处必须用事件捕获
+          //辅助话术的修改文字上传录音
+        $('div').off('mouseover',"[data-toggle='popover']").on('mouseover',"[data-toggle='popover']",function(e){
+          me = $(this)
+         // console.log($(this))
+          e.stopPropagation()
+
+          var tqa_id_out = me.attr('id')
+          var data_sound_file_popcontent = me.attr('data-sound-file')
+          var data_comment_popcontent = me.attr('data-comment')
+          var data_text_popcontent = me.attr('data-text')
+          $(this).popover({
+            html:true,
+            trigger:'click',
+            content:function(){
+             //必须用function才能动态加载数据，坑死！
+              console.log('bbbbb')
+              var htmlpop = '<i data-sound-file='+data_sound_file_popcontent+' data-tqa-id='+tqa_id_out+' class=icon-play-circle name=tqaAudio aria-hidden=true></i> \
+                      <label id=closetips name='+tqa_id_out+'>X</label> \
+                      <label id=tqamodifyaction-'+tqa_id_out+' data-sound-file='+data_sound_file_popcontent+' data-comment='+data_comment_popcontent+'> \
+                        <label id=changetext>修改文字</label>/ \
+                        <label id=uploadrecord2>上传录音</label> \
+                        \
+                      </label> \
+                      <hr> \
+                      '+'<span style="display:inline-block;width:100%;word-wrap:break-word;white-space:normal;">'+tqaIdAndText[tqa_id_out]+'</span>'
+              return htmlpop
+              }
+          });
+          //console.log(tqaIdAndText[tqa_id])
+          //此处popover中任何事件必须等popover显示时，才能添加，再外面添加无用。
+          $(this).on('shown.bs.popover',function(){
+            e.stopPropagation()
+            //播放tqa录音
+            $('div').off('click','[name="tqaAudio"]').on('click','[name="tqaAudio"]',function(e){
+
+              e.stopPropagation()
+              var that = $(this)
+              var playObjId = $(this).attr('data-tqa-id')
+              if($(this).hasClass('icon-play-circle')){
+                //console.log('play............')
+                audioObjForTqa[playObjId].play();
+                $(this).removeClass('icon-play-circle').addClass('glyphicon glyphicon-pause')
+                audioObjForTqa[playObjId].addEventListener('ended',function(){
+                  that.removeClass('glyphicon glyphicon-pause').addClass('icon-play-circle')
+                })
+              }else{
+                console.log('pausing.........')
+                audioObjForTqa[playObjId].pause();
+                that.removeClass('glyphicon glyphicon-pause').addClass('icon-play-circle')
+              }
+            })
+            $('.popover-content').on('click','[id^="tqamodifyaction"]',function(e){
+              e.stopPropagation()
+              //弹出tqa的模态框
+              $('#assistant_speechcraft').modal('show')
+              var that = $(this);
+              var tqa_comment = $(this).attr('data-comment');
+              // var tqa_text = $(this).attr('data-text')
+              tqa_id = $(this).attr('id').slice(16);
+              console.log(tqa_id)
+              initTqaFileInput(tqa_id)
+              $('#tqaWordRecord').text(tqa_comment);
+              $('#tqaTextArea').val(tqaIdAndText[tqa_id])
+              //console.log(tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2']==undefined)
+              $('#tqaTextArea_1').val((tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-1']!=undefined)?tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-1'][0]:'')
+              $('#tqaTextArea_2').val((tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2']!=undefined)?tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2'][0]:'')
+              $('#tqaTextArea_3').val((tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-3']!=undefined)?tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-3'][0]:'')
+              var popcontentHeight = that.parent().parent().height()
+              //console.log(that.parent().parent().height())
+              $('[id="tqaTextArea_1"]').off('input').on('input',function(e){
+                  if(tqaRepeatIdAndTextAndRecordFile.hasOwnProperty(tqa_id+'-repeat-1')){
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-1'][0] = $(this).val()
+                  }else{
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-1'] = []
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-1'][0] = $(this).val()
+                  }
+              })
+              $('[id="tqaTextArea_2"]').off('input').on('input',function(e){
+                  if(tqaRepeatIdAndTextAndRecordFile.hasOwnProperty(tqa_id+'-repeat-2')){
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2'][0] = $(this).val()
+                  }else{
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2'] = []
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-2'][0] = $(this).val()
+                  }
+              })
+              $('[id="tqaTextArea_3"]').off('input').on('input',function(e){
+                  if(tqaRepeatIdAndTextAndRecordFile.hasOwnProperty(tqa_id+'-repeat-3')){
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-3'][0] = $(this).val()
+                  }else{
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-3'] = []
+                    tqaRepeatIdAndTextAndRecordFile[tqa_id+'-repeat-3'][0] = $(this).val()
+                  }
+              })
+              $('#tqaTextArea').off('input').on('input',function(e){
+                e.stopPropagation()
+                console.log(that)
+                console.log('inputinputinputinputinput')
+                //input的时候以前点过modifyaction的that都会出现，所以要判断下
+                //使popover的指向保持在当前button的垂直中心位置
+                if(that[0].id == 'tqamodifyaction-'+tqa_id){
+                  var popcontentHeightChanged = that.parent().parent().height()
+                  if(popcontentHeight != popcontentHeightChanged){
+                    if(popcontentHeight < popcontentHeightChanged){
+                      var chazhi = (popcontentHeightChanged-popcontentHeight)/2
+                      //用当前的高度减去增加的一行的高度的1/2
+                      var popcontentNewTop = that.parent().parent().offset().top-chazhi
+                      //console.log(popcontentNewTop)
+                      that.parent().parent()[0].style.top = popcontentNewTop + 'px';
+                      popcontentHeight = popcontentHeightChanged
+                    }else if(popcontentHeight > popcontentHeightChanged){
+                      var chazhi = (popcontentHeight-popcontentHeightChanged)/2
+                      //用当前的高度减去增加的一行的高度的1/2
+                      var popcontentNewTop = that.parent().parent().offset().top+chazhi
+                      //console.log(popcontentNewTop)
+                      that.parent().parent()[0].style.top = popcontentNewTop + 'px';
+                      popcontentHeight = popcontentHeightChanged
+                    }
+                  }
+                  tqaIdAndText[tqa_id] = $(this).val()
+                  that.parent().find('span').text(tqaIdAndText[tqa_id])
+                }
+              })
+              // $('div').on('click','#closeNodeModal',function(e){
+              //   e.preventDefault()
+              //   $('.file-preview span').trigger('click')
+              // })
+            })
+            //点击X号关闭按钮
+            $('div').off('click','[id="closetips"]').on('click','[id="closetips"]',function(e){
+              e.stopPropagation()
+              //用如下方法会有点击关闭之后，会出现需要点击两次button才会show popover的bug，所以用trigger
+              // $(this).parent().parent().popover('hide')
+              var tid = $(this).attr('name')
+              $('button[id='+tid+']').trigger('click')
+            })
+          })
+          //popover的关闭
+          $(this).on('hidden.bs.popover',function(){
+            //console.log('nihao');
+           // $('[data-toggle="popover"]').popover('destroy')
+            //console.log(me)
+            //me.popover('destory')
+            //$('[data-trigger="click"]').popover('destroy')
+          })
+        })
+        $('div').off('click','#assistant-title').on('click','#assistant-title',function(e){
+          e.preventDefault()
+          if($('#collapse4').hasClass('in')){
+            console.log('aaaaaaaaaaaaaaaa')
+            $('.popover').each(function(index,element){
+              var popid = $(this).attr('id')
+              $('button[aria-describedby='+popid+']').trigger('click')
+            })
+            $('#collapse4').collapse('hide')
+          }
+        })
+        $('div').off('click','#question-title').on('click','#question-title',function(e){
+          e.preventDefault()
+          if($('#collapse2').hasClass('in')){
+            console.log('bbbbbbbbbbbbbbbbbb')
+            $('.popover').each(function(index,element){
+              var popid = $(this).attr('id')
+              $('button[aria-describedby='+popid+']').trigger('click')
+            })
+            $('#collapse2').collapse('hide')
+          }
+        })
+      }
+    )
+
+  </script>
+</body>
+
+</html>
