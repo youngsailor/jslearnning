@@ -50,4 +50,4 @@ const action2 = {
     type:'-'
 };
 sto.dispatch(action2);
-sto
+
