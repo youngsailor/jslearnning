@@ -39,7 +39,15 @@ class Store{
 
     }
 }
-const sto = new Store({name:'leo',num:5});
+function createStore(updaters,defaultState){
+    const sto = new Store(defaultState);
+    sto.setUpdates(updaters);
+    return sto;
+}
+const sto = createStore({
+    name:nameUpdater,
+    num:numUpdater
+},{name:'leo',num:5})
 function numUpdater(oldNum,action){
     switch(action.type){
         case '+':
@@ -59,10 +67,6 @@ function nameUpdater(oldName,action){
     }
 
 }
-sto.setUpdates({
-    name:nameUpdater,
-    num:numUpdater
-})
 sto.listen(()=>{
     console.log(sto.state);
 })
@@ -72,8 +76,57 @@ const action1 = {
 const action2 = {
     type:'-'
 };
-const action3 = {
-    type:'changeName',
-    name:'wangyingjie'
+function createChangeActioin(name){
+    return{
+        type:'changeName',
+        name
+    }
 }
-sto.dispatch(action1);
+let action3 = createChangeActioin('wangyingjie')
+
+
+
+//异步加载数据
+ajaxData(function(data){
+    sto.dispatch(createChangeActioin(data.name));
+})
+function logger(store){
+    let next = store.dispatch;
+    store.dispatch = function(action){
+        console.log('Action begin',action.type);
+        next.call(store,store);  //{ name: 'leo', num: 6 }
+        console.log('Action end',action.type);
+    }
+
+    return store;
+}
+function ajaxData(store){
+    let next = store.dispatch;
+    store.dispatch = function(action){
+        if(action.url){
+            function ajaxData(callback){
+                setTimeout(function(){
+                    action.name = 'ajax ok!';
+                    next.call(store,action);
+                },1000);
+            }
+        }else{
+            next.call(store,action);
+        }
+    }
+
+    return store;
+}
+//[logger,ajaxData]
+function useMiddleware(store,middles){
+    middles.reverse();
+    middles.forEach(middle=>{
+        middle(store);
+    })
+    return store;
+}
+useMiddleware(sto,[logger,ajaxData]);
+sto.dispatch({
+    type:'changeName',
+    url:'///'
+})
