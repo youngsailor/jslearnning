@@ -15,7 +15,19 @@ class Store{
     }
     //action
     dispatch(action){
-        this._state = this._updates(this.state,action); //return new State;
+        if(typeof this._updates === 'function'){
+            this._state = this._updates(this.state,action); //return new State;
+        }else{
+            let newState = {};
+            const keys = Object.keys(this._updates);
+            keys.forEach(key=>{
+                let updater = this._updates[key]
+                let value = this.state[key];
+                let newSubState = updater(value,action);
+                newState[key] = newSubState;
+            })
+            this._state = Object.assign({},this.state,newState);
+        }
         this._emitter.emit('change');
     }
     //add listener
@@ -24,21 +36,29 @@ class Store{
 
     }
 }
-const sto = new Store({num:5});
-
-sto.setUpdates(function(oldState,action){
-    let newstate = {};
+const sto = new Store({name:'leo',num:5});
+function numUpdater(oldNum,action){
     switch(action.type){
         case '+':
-            newstate.num = ++oldState.num;
-            return newstate;
+            return ++oldNum;
         case '-':
-            newstate.num = --oldState.num;
-            return newstate;
+            return --oldNum;
 
         default:
-            return oldState;
+            return oldNum;
     }
+}
+function nameUpdater(oldName,action){
+    if(action.type === 'changeName'){
+        return action.name;
+    }else{
+        return oldName;
+    }
+
+}
+sto.setUpdates({
+    name:nameUpdater,
+    num:numUpdater
 })
 sto.listen(()=>{
     console.log(sto.state);
@@ -49,5 +69,8 @@ const action = {
 const action2 = {
     type:'-'
 };
-sto.dispatch(action2);
-
+const action3 = {
+    type:'changeName',
+    name:'wangyingjie'
+}
+sto.dispatch(action3);
