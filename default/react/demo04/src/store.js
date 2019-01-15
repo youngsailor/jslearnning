@@ -94,7 +94,7 @@ function logger(store){
     let next = store.dispatch;
     store.dispatch = function(action){
         console.log('Action begin',action.type);
-        next.call(store,store);  //{ name: 'leo', num: 6 }
+        next.call(store,store);  //{ name: 'leo', num: 6 } //此处不要用store.next.call，因为this指针指向最后调用他的对象
         console.log('Action end',action.type);
     }
 
@@ -104,12 +104,13 @@ function ajaxData(store){
     let next = store.dispatch;
     store.dispatch = function(action){
         if(action.url){
-            function ajaxData(callback){
-                setTimeout(function(){
-                    action.name = 'ajax ok!';
-                    next.call(store,action);
-                },1000);
-            }
+            console.log(`请求ajax URL地址:${action.url}`);
+            setTimeout(function(){
+                action.name = 'ajax ok!';
+                console.log('ajax请求成功！')
+                next.call(store,action);
+            },1000);
+
         }else{
             next.call(store,action);
         }
@@ -125,8 +126,8 @@ function useMiddleware(store,middles){
     })
     return store;
 }
-useMiddleware(sto,[logger,ajaxData]);
+useMiddleware(sto,[ajaxData,logger]);
 sto.dispatch({
     type:'changeName',
-    url:'///'
+    url:'http://www.module.com'
 })
