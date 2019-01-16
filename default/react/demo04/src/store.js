@@ -7,7 +7,10 @@ class Store{
         this._emitter = new EventEmitter;
     }
     get state(){
-        return JSON.parse(JSON.stringify(this._state));
+        let oo = JSON.parse(JSON.stringify(this._state));
+
+        return oo;
+
     }
     //fns -function or object
     setUpdates(fns){
@@ -15,7 +18,19 @@ class Store{
     }
     //action
     dispatch(action){
-        this._state = this._updates(this.state,action); //return new State;
+        if(typeof this._updates === 'function'){
+            this._state = this._updates(this.state,action); //return new State;
+        }else{
+            let newState = {};
+            const keys = Object.keys(this._updates);
+            keys.forEach(key=>{
+                let updater = this._updates[key]
+                let oldValue = this.state[key];
+                let newSubState = updater(oldValue,action);
+                newState[key] = newSubState;
+            })
+            this._state = Object.assign({},this.state,newState);
+        }
         this._emitter.emit('change');
     }
     //add listener
@@ -24,30 +39,95 @@ class Store{
 
     }
 }
-const sto = new Store({num:5});
-
-sto.setUpdates(function(oldState,action){
-    let newstate = {};
+function createStore(updaters,defaultState){
+    const sto = new Store(defaultState);
+    sto.setUpdates(updaters);
+    return sto;
+}
+const sto = createStore({
+    name:nameUpdater,
+    num:numUpdater
+},{name:'leo',num:5})
+function numUpdater(oldNum,action){
     switch(action.type){
         case '+':
-            newstate.num = ++oldState.num;
-            return newstate;
+            return ++oldNum;
         case '-':
-            newstate.num = --oldState.num;
-            return newstate;
+            return --oldNum;
 
         default:
-            return oldState;
+            return oldNum;
     }
-})
+}
+function nameUpdater(oldName,action){
+    if(action.type === 'changeName'){
+        return action.name;
+    }else{
+        return oldName;
+    }
+
+}
 sto.listen(()=>{
     console.log(sto.state);
 })
-const action = {
+const action1 = {
     type:'+'
 };
 const action2 = {
     type:'-'
 };
-sto.dispatch(action2);
+function createChangeActioin(name){
+    return{
+        type:'changeName',
+        name
+    }
+}
+let action3 = createChangeActioin('wangyingjie')
 
+
+
+//异步加载数据
+ajaxData(function(data){
+    sto.dispatch(createChangeActioin(data.name));
+})
+function logger(store){
+    let next = store.dispatch;
+    store.dispatch = function(action){
+        console.log('Action begin',action.type);
+        next.call(store,store);  //{ name: 'leo', num: 6 } //此处不要用store.next.call，因为this指针指向最后调用他的对象
+        console.log('Action end',action.type);
+    }
+
+    return store;
+}
+function ajaxData(store){
+    let next = store.dispatch;
+    store.dispatch = function(action){
+        if(action.url){
+            console.log(`请求ajax URL地址:${action.url}`);
+            setTimeout(function(){
+                action.name = 'ajax ok!';
+                console.log('ajax请求成功！')
+                next.call(store,action);
+            },1000);
+
+        }else{
+            next.call(store,action);
+        }
+    }
+
+    return store;
+}
+//[logger,ajaxData]
+function useMiddleware(store,middles){
+    middles.reverse();
+    middles.forEach(middle=>{
+        middle(store);
+    })
+    return store;
+}
+useMiddleware(sto,[ajaxData,logger]);
+sto.dispatch({
+    type:'changeName',
+    url:'http://www.module.com'
+})
