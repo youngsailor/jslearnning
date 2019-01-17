@@ -1,8 +1,20 @@
 'use strict';
 const Redux = require('redux');
 const createStore = Redux.createStore;
-const combineReducers = Redux.combineReducers;
+// const combineReducers = Redux.combineReducers;
 
+//combineReducers by self
+
+function combineReducers(reducers){
+    // var keys = Object.keys(reducers);
+    return function reducer(state,action){
+        let newState = {}
+        for(let i in reducers){
+            newState[i] = reducers[i](state[i],action);
+        }
+        return newState;
+    }
+}
 // const reducers = {}
 // const reducer = combineReducers(reducers);
 // const reducers ={a:function(state,action){},b:function(state,action){}}
