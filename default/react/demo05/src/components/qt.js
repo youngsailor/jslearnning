@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let next = store.dispatch;
 dispatchAndLog(store){
     return function(next){
@@ -10,3 +11,6 @@ const applyMiddleware = function(middleware){
 }
 
 applyMiddleware(dispatchAndLog)
+=======
+a
+>>>>>>> 4567a4775ae67b8b7bd1d728dd7996dbb218aa7e
