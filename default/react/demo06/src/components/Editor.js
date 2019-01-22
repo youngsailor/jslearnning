@@ -3,20 +3,26 @@ import ReactDOM from 'react-dom';
 import {Form, Button,FormGroup,FormControl,} from "react-bootstrap";
 class Editor extends React.Component {
     submit() {
-        let value = this.myInput.value;
-        console.log(value);
-        this.props.submit(value);
+        let titlevalue = this.title.value;
+        let contextvalue = this.context.value;
+        this.props.submit({title:titlevalue,body:contextvalue});
+        this.title.value = '';
+        this.context.value = '';
     }
     render() {
         return (
             <div>
-                <Form>
+                <form>
                     <FormGroup controlId="exampleForm.ControlTextarea1">
-
-                      <FormControl as="textarea" rows="3" inputRef={ref => { this.myInput = ref; }}/>
+                        标题
+                      <FormControl as="textarea" rows="6" inputRef={ref => { this.title = ref; }}/>
+                    </FormGroup>
+                    <FormGroup controlId="exampleForm.ControlTextarea1">
+                        正文
+                      <FormControl as="textarea" rows="6" inputRef={ref => { this.context = ref; }}/>
                     </FormGroup>
                     <Button onClick={this.submit.bind(this)}>添加</Button>
-                </Form>
+                </form>
             </div>
             // <div>
             //     allowTransparency
