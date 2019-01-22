@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Form, Button,FormGroup,FormControl,} from "react-bootstrap";
+import {Form, Button,FormGroup,FormControl,ControlLabel} from "react-bootstrap";
 class Editor extends React.Component {
     submit() {
         let titlevalue = this.title.value;
@@ -14,12 +14,12 @@ class Editor extends React.Component {
             <div>
                 <form>
                     <FormGroup controlId="exampleForm.ControlTextarea1">
-                        标题
+                      <ControlLabel>标题</ControlLabel>
                       <FormControl as="textarea" rows="6" inputRef={ref => { this.title = ref; }}/>
                     </FormGroup>
-                    <FormGroup controlId="exampleForm.ControlTextarea1">
-                        正文
-                      <FormControl as="textarea" rows="6" inputRef={ref => { this.context = ref; }}/>
+                    <FormGroup controlId="formControlsTextarea">
+                      <ControlLabel>正文</ControlLabel>
+                      <FormControl bsSize="small" componentClass="textarea" placeholder="textarea" inputRef={ref => {this.context=ref;}}/>
                     </FormGroup>
                     <Button onClick={this.submit.bind(this)}>添加</Button>
                 </form>

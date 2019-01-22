@@ -13,7 +13,7 @@ class Login extends React.Component{
             <div>
                 <form>
                     <FormGroup controlId="exampleForm.ControlTextarea1">
-                        登陆名称
+                        登陆名称{this.props.loginError?this.props.loginError.message:''}
                       <FormControl as="textarea" type='text' rows="6" inputRef={ref => { this.loginname = ref; }}/>
                     </FormGroup>
                     <FormGroup controlId="exampleForm.ControlTextarea1">
