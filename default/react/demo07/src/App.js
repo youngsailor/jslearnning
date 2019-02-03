@@ -28,6 +28,7 @@ class _App extends Component {
                 <Navbar />
                 {this.getCurrentPage()}
             </div>
+            
         );
     }
 }
