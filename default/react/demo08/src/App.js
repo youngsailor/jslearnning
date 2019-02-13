@@ -30,8 +30,8 @@ class App extends Component {
 }
 //每次更新都会触发，第一次加载也会
 const mapStateToProps = (state) =>{
+    console.log(state)
     return {
-        
         counter:state.counter
     }
 }

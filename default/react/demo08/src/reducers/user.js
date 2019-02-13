@@ -1,6 +1,7 @@
 import { FETCH_USER_SUCCESS } from '../constants';
 
 export const user = (state={},action={})=>{
+    console.log(state)
     switch (action.type) {
         case 'FETCH_USER_SUCCESS':
             console.log(state);

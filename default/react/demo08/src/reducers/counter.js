@@ -1,4 +1,5 @@
 const counter = (state =0,action = {})=>{
+    console.log(state)
     //reducer中的state是该reducer上次return的值，只是本reducer的。
     switch(action.type){
         case 'INCREMENT':
