@@ -1,13 +1,17 @@
 import React from 'react';
 import { connect } from 'dva';
+import Counter from '../components/Counter';
 import styles from './IndexPage.css';
 
-const Counter = (props) =>{
+const CounterPage = (props) =>{
     return (
-        <div>Counter</div>
+        <div>
+            <p>Counter</p>
+            <Counter/>
+        </div>
     )
 }
 Counter.propTypes = {
 
 }
-export default Counter;
+export default CounterPage;
