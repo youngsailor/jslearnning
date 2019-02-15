@@ -1,4 +1,7 @@
 import {delay} from 'dva/saga';
+import {routerRedux} from 'dva/router';
+import queryString from 'query-string';
+import pathToRegexp from 'path-to-regexp';
 export default {
     namespace:'counter',
     state:{count:1},
@@ -9,6 +12,37 @@ export default {
                 count:state.count+1
             }
         }
+    },
+    subscriptions:{
+        setup({dispatch,history}){
+            window.onresize = () =>{
+                dispatch({type:'add'})
+            }
+        },
+
+            // document.addEventListener('click',()=>{
+            //     dispatch({type:'add'})
+            // });
+
+        onClick({dispatch}){
+            document.addEventListener('click',()=>{
+                dispatch({type:'asyncAdd'})
+            })
+        },
+        setupHistory({dispatch,history}){
+            history.listen((location)=>{
+                console.log('aaa')
+                console.log(location)
+                // if(location.pathname === '/counter'){
+                //     dispatch({type:'add'})
+                // }
+                const match = pathToRegexp('/counter').exec(location.pathname)
+                if(match){
+                    dispatch({type:'asyncAdd'})
+                }
+            })
+        }
+
     },
     effects:{
         *asyncAdd({payload},{call,put,select}){
@@ -21,6 +55,13 @@ export default {
             console.log(counter)
             yield call(delay,1000);
             yield put({type:'add'});
+            //在models中实现路由跳转,要dispatch这个函数,
+            // yield put(routerRedux.push({
+            //     pathname:'/',
+            //     search:queryString.stringify({
+            //         from:'rails365'
+            //     })
+            // }))
         }
     }
 }

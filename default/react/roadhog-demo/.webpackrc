@@ -1,0 +1,13 @@
+{
+    "entry":{
+        "index":"./src/index.js",
+        "counter":"./src/counter.js"
+    },
+    "proxy":{
+        "/api":{
+            "target":"http://jsonplaceholder.typicode.com/",
+            "changeOrigin":true,
+            "pathRewrite":{"^/api":""}
+        }
+    }
+}

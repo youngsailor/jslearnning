@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'dva';
 import PropTypes from 'prop-types';
 import {counterAdd,counterAsyncAdd} from '../actions';
-import{withRouter} from 'dva/router'
+import{withRouter,Link} from 'dva/router'
 //const Counter = (props) =>{
 //当mapStateToDispatch没有指定的时候，dispatch可以直接传入这里
 const Counter = ({counter,dispatch,history}) =>{
@@ -11,6 +11,7 @@ const Counter = ({counter,dispatch,history}) =>{
     return (
         <div>
             <h1>{counter.count}</h1>
+            <Link to='/'>home page </Link>
             <button onClick={()=>history.push('/')}>go back home</button>
             <button onClick={()=>{dispatch({type:'counter/add',name:'wang'})}}>+</button>
             <button onClick={()=>{dispatch({type:'counter/asyncAdd',name:'wang'})}}>async+</button>
@@ -32,5 +33,5 @@ const mapStateToProps = (state) =>{
 }
 //也可以在routes中connect，就可以传入路由等更多的属性
 // export default connect(mapStateToProps,{counterAdd,counterAsyncAdd})(Counter);这种写法组件中用props引入
-//withRouter之后就可以直接传参
+//withRouter之后就可以直接传递history参数
 export default connect(mapStateToProps)(withRouter(Counter));

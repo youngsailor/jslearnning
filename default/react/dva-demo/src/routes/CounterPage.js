@@ -4,6 +4,7 @@ import Counter from '../components/Counter';
 import styles from './IndexPage.css';
 
 const CounterPage = (props) =>{
+    console.log('aaaa')
     return (
         <div>
             <p>Counter</p>
