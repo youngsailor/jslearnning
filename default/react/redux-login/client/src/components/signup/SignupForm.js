@@ -10,11 +10,13 @@ class SignupForm extends React.Component {
         password:'',
         passwordConfirmation:'',
         errors:{},
-        isLoading:false
+        isLoading:false,
+        invalid:false
     }
     static propTypes = {
         userSignupRequest: PropTypes.func.isRequired,
-        addFlashMessage:PropTypes.func.isRequired
+        addFlashMessage:PropTypes.func.isRequired,
+        isUserExists:PropTypes.func.isRequired
     };
     onChange = (e) =>{
         console.log(e.target)
@@ -48,6 +50,25 @@ class SignupForm extends React.Component {
         )
         // console.log(this.props.userSignupRequest);
     }
+    //用户名冲突检查
+    checkUserExists =(e) =>{
+        const field = e.target.name;
+        const val = e.target.value;
+        if(val !== ''){
+            this.props.isUserExists(val).then(res=>{
+                let errors = this.state.errors;
+                let invalid;
+                if(res.data.user){
+                    errors[field] = "There is user with such" +field;
+                    invalid=true;
+                }else{
+                    errors[field] = "";
+                    invalid = false
+                }
+                this.setState({errors,invalid})
+            })
+        }
+    }
     render () {
         const {errors} = this.state;
         return(
@@ -55,7 +76,7 @@ class SignupForm extends React.Component {
                 <h1>Join our community</h1>
                 <div className="form-group">
                     <label className="control-label">Username</label>
-                    <input value={this.state.username} onChange={(e)=>this.onChange(e)} type="text" name="username" className={classnames("form-control",{'is-invalid':errors.username})}/>
+                    <input onBlur={this.checkUserExists} value={this.state.username} onChange={(e)=>this.onChange(e)} type="text" name="username" className={classnames("form-control",{'is-invalid':errors.username})}/>
                     {errors.username && <span className='form-text text-muted'>{errors.username}</span>}
                 </div>
                 <div className="form-group">
@@ -74,7 +95,7 @@ class SignupForm extends React.Component {
                     {errors.passwordConfirmation && <span className='form-text text-muted'>{errors.passwordConfirmation}</span>}
                 </div>
                 <div className="form-group">
-                    <button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
+                    <button disabled={this.state.isLoading || this.state.invalid} className="btn btn-primary btn-lg">
                     Sign up
                     </button>
                 </div>
